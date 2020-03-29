@@ -1,4 +1,4 @@
-package Util;
+package util;
 
 public class ByteUtil {
     public static final int Motorola = 0;
