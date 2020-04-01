@@ -1,5 +1,4 @@
 # Project exclude paths
 /target/
 .idea/.gitignore
-src/main/resources/
 src/test/
