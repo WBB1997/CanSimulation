@@ -73,28 +73,6 @@ public class Handler {
         }
     }
 
-    // 修改信号值
-    private void setSignalValue(String msgName, String signalName, double value) {
-        dataConvert.setSignalValue(msgName, signalName, value);
-    }
-
-    // 接收UI界面发来的指令
-    @Subscribe
-    public void messageEventBus(MessageWrap messageWrap) {
-        JSONObject jsonObject = JSON.parseObject(messageWrap.getMessage());
-        String action = jsonObject.getString("action");
-        JSONObject data = jsonObject.getJSONObject("data");
-        System.out.println("CanService EventBus receive: " + jsonObject);
-        switch (action) {
-            case "send":
-                sendData(data.toJSONString());
-                break;
-            case "modify":
-                setSignalValue(data.getString("msg_name"), data.getString("signal_name"), data.getDoubleValue("value"));
-                break;
-        }
-    }
-
     // 发送修改信号值数据
     public void modifyCommand(String msg_name, String signal_name, double value) {
         dataConvert.setSignalValue(msg_name, signal_name, value);
