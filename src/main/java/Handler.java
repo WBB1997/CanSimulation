@@ -1,7 +1,3 @@
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.eventbus.Subscribe;
 import eventbus.MessageWrap;
 import eventbus.MyEventBus;
 import huat.wubeibei.candataconvert.DataConvert;
@@ -24,9 +20,9 @@ public class Handler {
     private DataConvert dataConvert;
     private final static int receivePort = 8888;
     private final static int sendPort = 9999;
-    private final static String ServiceIp = "192.168.0.101"; // CAN总线IP地址
+    private final static String ServiceIp = "192.168.0.101"; // ServiceIp
     private final static int MessageLength = 10;
-    private final Thread CanReceiveThread = new Thread(new CanReceive()); // CAN总线接收线程
+    private final Thread CanReceiveThread = new Thread(new CanReceive()); // Service接收线程
     private final HashMap<String, ExecutorService> MapThreadPool = new HashMap<String, ExecutorService>() { // 接收线程池Map
         {
             put(MessageName.HMI.toString(), Executors.newSingleThreadExecutor());
@@ -101,6 +97,7 @@ public class Handler {
                 while (true) {
                     datagramPacket = new DatagramPacket(receiveMsg, receiveMsg.length);
                     datagramSocket.receive(datagramPacket);
+                    System.out.println("Receive->" + datagramPacket.getAddress() + ": " + ByteUtil.bytesToHex(receiveMsg));
                     dataConvert.getJSONString(receiveMsg, new JSONStreamListener() {
                         @Override
                         public void produce(String json) {
